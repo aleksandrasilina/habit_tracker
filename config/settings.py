@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -11,9 +12,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG", False) == "True"
 
-
 ALLOWED_HOSTS = []
-
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -22,7 +21,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     "rest_framework",
+    "rest_framework_simplejwt",
+
     "users",
     "habits",
 ]
@@ -57,7 +59,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -69,6 +70,14 @@ DATABASES = {
     }
 }
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -85,7 +94,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -94,9 +102,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 STATIC_URL = "static/"
-
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -104,3 +110,9 @@ AUTH_USER_MODEL = "users.User"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "UPDATE_LAST_LOGIN": True,
+}
