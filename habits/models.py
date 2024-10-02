@@ -12,6 +12,7 @@ class Habit(models.Model):
         verbose_name="Пользователь",
         help_text="Укажите пользователя",
         related_name="habits",
+        **NULLABLE,
     )
     place = models.CharField(
         max_length=100,
