@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from habits.models import Habit
+
+
+@admin.register(Habit)
+class Habit(admin.ModelAdmin):
+    list_filter = ("id", "do_at")
