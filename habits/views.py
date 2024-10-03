@@ -1,11 +1,11 @@
-from django.shortcuts import render
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.viewsets import ModelViewSet
 
 from habits.models import Habit
 from habits.paginators import HabitPaginator
 from habits.serializers import HabitSerializer
+from users.permissions import IsCreator
 
 
 class HabitViewSet(ModelViewSet):
@@ -26,13 +26,12 @@ class HabitViewSet(ModelViewSet):
             queryset = queryset.filter(user=self.request.user)
         return queryset
 
-
-    # def get_permissions(self):
-    #     if self.action in ["list", "update", "partial_update", "retrieve", "destroy"]:
-    #         self.permission_classes = (
-    #             IsAuthenticated, IsOwner | IsAdminUser,
-    #         )
-    #     return super().get_permissions()
+    def get_permissions(self):
+        if self.action != "create":
+            self.permission_classes = (
+                IsAuthenticated, IsCreator | IsAdminUser,
+            )
+        return super().get_permissions()
 
 
 class PublicHabitListAPIView(ListAPIView):
