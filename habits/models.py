@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from config import settings
 
@@ -63,7 +64,7 @@ class Habit(models.Model):
     )
 
     def __str__(self):
-        return f"Я буду {self.action} в {self.do_at} {self.place}"
+        return f"Я буду {self.action} в {timezone.localtime(self.do_at).strftime("%d.%m.%Y %H:%M")} {self.place}"
 
     class Meta:
         verbose_name = "Привычка"
