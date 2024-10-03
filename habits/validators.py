@@ -12,14 +12,18 @@ class RelatedHabitOrRewardValidator:
         related_habit = dict(value).get(self.field_1)
         reward = dict(value).get(self.field_2)
         if related_habit and reward:
-            raise ValidationError("Нельзя одновременно указывать и вознаграждение и связанную привычку.")
+            raise ValidationError(
+                "Нельзя одновременно указывать и вознаграждение и связанную привычку."
+            )
 
 
 def validate_duration(value):
     """Проверяет, что время выполнения привычки не больше 120 секунд."""
 
     if value > 120:
-        raise ValidationError("Время выполнения привычки должно быть не больше 120 секунд.")
+        raise ValidationError(
+            "Время выполнения привычки должно быть не больше 120 секунд."
+        )
 
 
 class RelatedHabitValidator:
@@ -49,7 +53,9 @@ class EnjoyableHabitValidator:
         tmp_reward = dict(value).get(self.reward)
         if tmp_is_enjoyable:
             if tmp_related_habit or tmp_reward:
-                raise ValidationError("У приятной привычки не может быть вознаграждения или связанной привычки.")
+                raise ValidationError(
+                    "У приятной привычки не может быть вознаграждения или связанной привычки."
+                )
 
 
 class PeriodicityValidator:
