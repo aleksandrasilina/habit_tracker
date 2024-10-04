@@ -1,7 +1,7 @@
 from django.utils.decorators import method_decorator
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from habits.models import Habit
@@ -10,11 +10,25 @@ from habits.serializers import HabitSerializer
 from users.permissions import IsCreator
 
 
-@method_decorator(name='update', decorator=swagger_auto_schema(operation_description="Изменение привычки."))
-@method_decorator(name='destroy', decorator=swagger_auto_schema(operation_description="Удаление привычки."))
-@method_decorator(name='create', decorator=swagger_auto_schema(operation_description="Создание привычки."))
-@method_decorator(name='retrieve', decorator=swagger_auto_schema(operation_description="Информация о привычке."))
-@method_decorator(name='list', decorator=swagger_auto_schema(operation_description="Список привычек."))
+@method_decorator(
+    name="update",
+    decorator=swagger_auto_schema(operation_description="Изменение привычки."),
+)
+@method_decorator(
+    name="destroy",
+    decorator=swagger_auto_schema(operation_description="Удаление привычки."),
+)
+@method_decorator(
+    name="create",
+    decorator=swagger_auto_schema(operation_description="Создание привычки."),
+)
+@method_decorator(
+    name="retrieve",
+    decorator=swagger_auto_schema(operation_description="Информация о привычке."),
+)
+@method_decorator(
+    name="list", decorator=swagger_auto_schema(operation_description="Список привычек.")
+)
 class HabitViewSet(ModelViewSet):
     """Вьюсет для привычек."""
 
@@ -30,7 +44,7 @@ class HabitViewSet(ModelViewSet):
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
         if not self.request.user.is_anonymous:
-            if self.request.user.is_superuser:
+            if self.request.user.is_staff:
                 queryset = Habit.objects.all()
             else:
                 queryset = queryset.filter(user=self.request.user)
@@ -39,7 +53,8 @@ class HabitViewSet(ModelViewSet):
     def get_permissions(self):
         if self.action != "create":
             self.permission_classes = (
-                IsAuthenticated, IsCreator | IsAdminUser,
+                IsAuthenticated,
+                IsCreator | IsAdminUser,
             )
         return super().get_permissions()
 
