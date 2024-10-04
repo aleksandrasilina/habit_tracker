@@ -1,5 +1,7 @@
+import datetime
 from datetime import timedelta
 
+import pytz
 import requests
 from celery import shared_task
 from django.utils import timezone
@@ -25,7 +27,10 @@ def send_telegram_message(chat_id, message):
 def send_habit_reminder():
     """Отправляет напоминание пользователю в телеграм о необходимости выполнить привычку за 5 мин до ее начала."""
 
-    current_datetime = timezone.localtime(timezone.now())
+    # current_datetime = timezone.localtime(timezone.now())
+    zone = pytz.timezone(settings.TIME_ZONE)
+    current_datetime = datetime.datetime.now(zone)
+
     habits = Habit.objects.filter(
         do_at__lte=current_datetime + timedelta(minutes=5),
         do_at__gt=current_datetime,
