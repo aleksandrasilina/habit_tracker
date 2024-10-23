@@ -67,5 +67,5 @@ class PeriodicityValidator:
     def __call__(self, value):
         tmp_val = dict(value).get(self.field)
         if tmp_val:
-            if tmp_val > 7:
+            if tmp_val > "7":
                 raise ValidationError("Нельзя выполнять привычку реже 1 раза в 7 дней.")
