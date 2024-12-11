@@ -83,7 +83,7 @@ python manage.py loaddata habits.json
 ```
 python manage.py loaddata users.json
 ```
-3. Создайте суперпользователя
+3. Создайте суперпользователя (почта: admin@example.ru, пароль: 123456)
 ```
 python manage.py csu
 ```
