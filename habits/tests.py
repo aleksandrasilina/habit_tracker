@@ -368,7 +368,7 @@ class HabitTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data, result)
 
-        # Тесты для обычного пользователя
+        # Тесты для анонимного пользователя
 
     def test_habit_retrieve_anonymous_user_access(self):
         """Тестирует получение информации об одной привычке анонимным пользователем."""
