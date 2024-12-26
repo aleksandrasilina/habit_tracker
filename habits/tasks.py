@@ -25,7 +25,8 @@ def send_telegram_message(chat_id, message):
 
 @shared_task
 def send_habit_reminder():
-    """Отправляет напоминание пользователю в телеграм о необходимости выполнить привычку за 5 мин до ее начала."""
+    """Отправляет напоминания пользователю в телеграм о необходимости выполнить полезную привычку
+    за 5 мин до ее начала, в момент выполнения, а также напоминание о приятной привычке или вознаграждении."""
 
     # current_datetime = timezone.localtime(timezone.now())
     zone = pytz.timezone(settings.TIME_ZONE)
